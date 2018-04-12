@@ -97,5 +97,10 @@ public class Home : Piece, IHome
         get { return m_BoldiCount; }
     }
 
+    void IHome.LaunchBoldies(IHome to, EAmount amount)
+    {
+        Home toHome = (Home)to;
+    }
+
     #endregion
 }

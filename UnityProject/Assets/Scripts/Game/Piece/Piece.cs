@@ -6,7 +6,7 @@ using XKTools;
 /// <summary>
 /// 
 /// </summary>
-public class Piece : GameboardComp
+public class Piece : GameboardComp, IPiece
 {
     #region Members
     
@@ -188,6 +188,20 @@ public class Piece : GameboardComp
     {
         if (m_Root != null)
             m_Root.parent = parent;
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public Vector3 Position
+    {
+        get
+        {
+            if (m_Root != null)
+                return m_Root.position;
+
+            return Vector3.zero;
+        }
     }
 
     /// <summary>

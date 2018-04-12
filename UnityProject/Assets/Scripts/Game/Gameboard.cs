@@ -20,6 +20,7 @@ public class Gameboard : XKObject, IGameboard
     Transform           m_HomeRoot          = null;
     Transform           m_BoldiRoot         = null;
     List<Home>          m_Homes             = new List<Home>();
+    IHome[]             m_IHomes            = null;
     List<Boldi>         m_Boldies           = new List<Boldi>();
 
     Text                m_HomeTemplate      = null;
@@ -255,10 +256,19 @@ public class Gameboard : XKObject, IGameboard
 
     #region IGameboard Implementation
 
-    void IGameboard.LaunchBoldies(IHome from, IHome to, EAmount amount)
+    IHome[] IGameboard.Homes
     {
-        Home fromHome = (Home)from;
-        Home toHome = (Home)to;
+        get
+        {
+            if (m_IHomes == null)
+            {
+                List<IHome> homes = new List<IHome>();
+                foreach (Home home in m_Homes)
+                    homes.Add(home);
+                m_IHomes = homes.ToArray();
+            }
+            return m_IHomes;
+        }
     }
 
     #endregion

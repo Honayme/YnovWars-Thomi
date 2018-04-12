@@ -1,7 +1,7 @@
 ﻿/// <summary>
 /// 
 /// </summary>
-public interface IBoldi
+public interface IBoldi : IPiece
 {
 
 }
