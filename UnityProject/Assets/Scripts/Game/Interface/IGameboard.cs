@@ -4,5 +4,5 @@
 public interface IGameboard
 {
     IHome[] Homes { get; }
-    IHome[] GetHomes(int teamId);
+    IHome[] GetHomes(int teamId, bool belongToTeam);
 }

@@ -22,12 +22,7 @@ public class AITester : AIBase
 
         if (Input.GetKeyDown(KeyCode.A))
         {
-            // find a home which is mine
-            IHome[] homes = m_Gameboard.GetHomes(-1);
-
-            // launch boldies
-            if (homes.Length > 1)
-                homes[0].LaunchBoldies(homes[1], EAmount.Half);
+            LaunchRandom();
         }
     }
 
@@ -35,6 +30,17 @@ public class AITester : AIBase
 
 
     #region Private Manipulators
+
+    void LaunchRandom()
+    {
+        // find a home which is mine
+        IHome[] myHomes = m_Gameboard.GetHomes(TeamId, true);
+        IHome[] theirHomes = m_Gameboard.GetHomes(TeamId, false);
+
+        // launch boldies
+        if (myHomes.Length > 0 && theirHomes.Length > 0)
+            myHomes[Random.Range(0, myHomes.Length)].LaunchBoldies(theirHomes[0], EAmount.Half);
+    }
 
     #endregion
 

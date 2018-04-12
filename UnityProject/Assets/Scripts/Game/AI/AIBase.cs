@@ -24,5 +24,10 @@ public class AIBase : GameboardCompInterfaced
 
     #region Public Accessors
 
+    /// <summary>
+    /// 
+    /// </summary>
+    public int TeamId { get; set; }
+
     #endregion
 }

@@ -23,6 +23,7 @@ public class Gameboard : XKObject, IGameboard
     List<IHome>         m_TmpHomes          = new List<IHome>();
     IHome[]             m_IHomes            = null;
     List<Boldi>         m_Boldies           = new List<Boldi>();
+    List<AIBase>        m_AIs               = new List<AIBase>();
 
     Text                m_HomeTemplate      = null;
 
@@ -212,6 +213,15 @@ public class Gameboard : XKObject, IGameboard
         where T : AIBase, new()
     {
         T res = AddXKComponent<T>();
+        res.TeamId = m_AIs.Count;
+        m_AIs.Add(res);
+
+        // find a start home!
+        IGameboard gb = (this);
+        IHome[] homes = gb.GetHomes(-1, true);
+        if (homes.Length > 0)
+            ((Home)homes[0]).TeamId = res.TeamId;
+
         return res;
     }
 
@@ -284,12 +294,22 @@ public class Gameboard : XKObject, IGameboard
         }
     }
 
-    IHome[] IGameboard.GetHomes(int teamId)
+    IHome[] IGameboard.GetHomes(int teamId, bool belongToTeam)
     {
         m_TmpHomes.Clear();
         for (int i = 0; i < m_Homes.Count; ++i)
-            if (m_Homes[i].TeamId == teamId)
-                m_TmpHomes.Add(m_Homes[i]);
+        {
+            if (belongToTeam)
+            {
+                if (m_Homes[i].TeamId == teamId)
+                    m_TmpHomes.Add(m_Homes[i]);
+            }
+            else
+            {
+                if (m_Homes[i].TeamId != teamId)
+                    m_TmpHomes.Add(m_Homes[i]);
+            }
+        }
         return m_TmpHomes.ToArray();
     }
 

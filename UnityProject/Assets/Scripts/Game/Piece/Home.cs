@@ -78,6 +78,7 @@ public class Home : Piece, IHome
         {
             SetBoldiCount(m_BoldiCount + 1);
         }
+
         m_Gameboard.Pool.ReturnBoldi(boldi);
     }
 
@@ -98,8 +99,9 @@ public class Home : Piece, IHome
 
     void OnEndGrowTimer()
     {
-        // update boldi count
-        SetBoldiCount(m_BoldiCount + 1);
+        // update boldi count if it belongs to a player
+        if (TeamId != -1)
+            SetBoldiCount(m_BoldiCount + 1);
 
         // restart timer
         m_GrowTimer.StartTimer(1.0f / m_GrowRate);

@@ -11,8 +11,7 @@ public class Boldi : Piece, IBoldi
     
     const float                             c_Speed             = 10.0f;
     static Dictionary<int, Material>        s_Materials         = new Dictionary<int, Material>();
-
-    Home                                    m_StartHome         = null;
+    
     Home                                    m_Destination       = null;
 
     #endregion
@@ -47,7 +46,6 @@ public class Boldi : Piece, IBoldi
         base.Reset();
 
         m_Destination = null;
-        m_StartHome = null;
     }
 
     /// <summary>
@@ -59,7 +57,6 @@ public class Boldi : Piece, IBoldi
 
         // nullify pointers
         m_Destination = null;
-        m_StartHome = null;
     }
 
     /// <summary>
@@ -105,7 +102,6 @@ public class Boldi : Piece, IBoldi
     /// <param name="destination"></param>
     public void MoveTo(Home startHome, Home destination)
     {
-        m_StartHome = startHome;
         m_Destination = destination;
     }
 
