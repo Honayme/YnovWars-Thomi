@@ -28,6 +28,8 @@ public class Gameboard : XKObject, IGameboard
     List<AIBase>        m_AliveAIs          = new List<AIBase>();
 
     Text                m_HomeTemplate      = null;
+    Text                m_GameTimeText      = null;
+    float               m_GameTime          = 0.0f;
 
     #endregion
 
@@ -44,9 +46,21 @@ public class Gameboard : XKObject, IGameboard
         // create gameboard elements
         FindCamera();
         FindHomeTemplate();
+        FindGameTime();
         CreateRoots();
         CreatePool();
         CreateMap();
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public override void Update()
+    {
+        base.Update();
+
+        m_GameTime += Time.deltaTime;
+        SetGameTimeText();
     }
 
     /// <summary>
@@ -79,6 +93,23 @@ public class Gameboard : XKObject, IGameboard
             if (m_HomeTemplate.IsValid("Gameboard.HomeTemplate.Text"))
                 m_HomeTemplate.text = "";
         }
+    }
+
+    void FindGameTime()
+    {
+        GameObject obj = GameObject.Find("GameTime");
+        if (obj.IsValid("Gameboard.GameTime"))
+        {
+            m_GameTimeText = obj.GetComponent<Text>();
+            if (m_GameTimeText.IsValid("Gameboard.GameTime.Text"))
+                SetGameTimeText();
+        }
+    }
+
+    void SetGameTimeText()
+    {
+        if (m_GameTimeText != null)
+            m_GameTimeText.text = m_GameTime.ToString("0.0");
     }
 
     void CreateRoots()
