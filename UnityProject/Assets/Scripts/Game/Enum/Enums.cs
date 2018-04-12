@@ -12,4 +12,9 @@ public enum EAmount
     ThreeQuarter,
     /// <summary></summary>
     Full,
+
+    /// <summary>
+    /// This is not a valid amount, just a helper
+    /// </summary>
+    Count,
 }

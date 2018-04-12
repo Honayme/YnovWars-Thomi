@@ -225,6 +225,17 @@ public class Gameboard : XKObject, IGameboard
         return res;
     }
 
+    /// <summary>
+    /// Called when an ai launches bodies (my self included)
+    /// </summary>
+    /// <param name="from"></param>
+    /// <param name="to"></param>
+    public void OnBoldiLaunch(IHome from, IHome to)
+    {
+        for (int i = 0; i < m_AIs.Count; ++i)
+            m_AIs[i].OnBoldiLaunch(from, to);
+    }
+
     #endregion
 
 

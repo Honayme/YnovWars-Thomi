@@ -43,8 +43,12 @@ public class YnovWars : XKBehaviour
 
     void CreateAI()
     {
-        if (m_Gameboard != null)
-            m_Gameboard.CreateAI<AITester>();
+        if (m_Gameboard == null)
+            return;
+        m_Gameboard.CreateAI<AITester>();
+        m_Gameboard.CreateAI<AITester>();
+        m_Gameboard.CreateAI<AITester>();
+        m_Gameboard.CreateAI<AITester>();
     }
 
     #endregion
