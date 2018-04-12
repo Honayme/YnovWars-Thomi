@@ -11,12 +11,15 @@ public class Home : Piece, IHome
     #region Members
 
     const float                             c_ScalePerBoldi         = 0.05f;
+    const float                             c_GrowPerBoldi          = 0.01f;
 
     static Dictionary<int, Material>        s_Materials             = new Dictionary<int, Material>();
 
     int                                     m_Id                    = -1;
     int                                     m_BoldiCount            = 0;
     Text                                    m_BoldiCountText        = null;
+    float                                   m_GrowRate              = 1.0f;
+    XKTimer                                 m_GrowTimer             = null;
 
     #endregion
 
@@ -30,6 +33,7 @@ public class Home : Piece, IHome
     {
         base.Initialize();
 
+        CreateTimer();
         InitProps();
     }
 
@@ -48,6 +52,21 @@ public class Home : Piece, IHome
 
     #region Private Manipulators
 
+    void CreateTimer()
+    {
+        m_GrowTimer = AddXKComponent<XKTimer>();
+        m_GrowTimer.OnEnd += OnEndTimer;
+    }
+
+    void OnEndTimer()
+    {
+        // update boldi count
+        SetBoldiCount(m_BoldiCount + 1);
+
+        // restart timer
+        m_GrowTimer.StartTimer(1.0f / m_GrowRate);
+    }
+
     void InitProps()
     {
         // init BoldiCount
@@ -55,6 +74,10 @@ public class Home : Piece, IHome
 
         // scale according to start BoldiCount
         SetScale(Vector3.one * (1.0f + m_BoldiCount * c_ScalePerBoldi));
+
+        // manage grow rate
+        m_GrowRate = 1.0f + m_BoldiCount * c_GrowPerBoldi;
+        m_GrowTimer.StartTimer(1.0f / m_GrowRate);
     }
 
     void SetBoldiCount(int count)
@@ -86,7 +109,7 @@ public class Home : Piece, IHome
         m_BoldiCountText = text;
         SetBoldiCount(m_BoldiCount);
     }
-    
+
     #endregion
 
 
@@ -97,9 +120,14 @@ public class Home : Piece, IHome
         get { return m_BoldiCount; }
     }
 
+    float IHome.GrowRate
+    {
+        get { return m_GrowRate; }
+    }
+
     void IHome.LaunchBoldies(IHome to, EAmount amount)
     {
-        Home toHome = (Home)to;
+        //Home toHome = (Home)to;
     }
 
     #endregion
