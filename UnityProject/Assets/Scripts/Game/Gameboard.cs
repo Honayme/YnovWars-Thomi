@@ -20,6 +20,7 @@ public class Gameboard : XKObject, IGameboard
     Transform           m_HomeRoot          = null;
     Transform           m_BoldiRoot         = null;
     List<Home>          m_Homes             = new List<Home>();
+    List<IHome>         m_TmpHomes          = new List<IHome>();
     IHome[]             m_IHomes            = null;
     List<Boldi>         m_Boldies           = new List<Boldi>();
 
@@ -202,6 +203,18 @@ public class Gameboard : XKObject, IGameboard
         return res;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    public T CreateAI<T>()
+        where T : AIBase, new()
+    {
+        T res = AddXKComponent<T>();
+        return res;
+    }
+
     #endregion
 
 
@@ -269,6 +282,15 @@ public class Gameboard : XKObject, IGameboard
             }
             return m_IHomes;
         }
+    }
+
+    IHome[] IGameboard.GetHomes(int teamId)
+    {
+        m_TmpHomes.Clear();
+        for (int i = 0; i < m_Homes.Count; ++i)
+            if (m_Homes[i].TeamId == teamId)
+                m_TmpHomes.Add(m_Homes[i]);
+        return m_TmpHomes.ToArray();
     }
 
     #endregion

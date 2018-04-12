@@ -23,6 +23,7 @@ public class YnovWars : XKBehaviour
 
         EnableLogs();
         CreateGameboard();
+        CreateAI();
     }
 
     #endregion
@@ -38,6 +39,12 @@ public class YnovWars : XKBehaviour
     void CreateGameboard()
     {
         m_Gameboard = ComponentContainer.AddXKComponent<Gameboard>();
+    }
+
+    void CreateAI()
+    {
+        if (m_Gameboard != null)
+            m_Gameboard.CreateAI<AITester>();
     }
 
     #endregion
