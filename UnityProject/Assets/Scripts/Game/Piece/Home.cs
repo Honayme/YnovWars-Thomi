@@ -10,20 +10,21 @@ public class Home : Piece, IHome
 {
     #region Members
 
-    const float                             c_ScalePerBoldi         = 0.05f;
-    const float                             c_GrowPerBoldi          = 0.01f;
-    const float                             c_DelayPerBoldi         = 0.1f;
+    const int                               c_StartBoldiCountForAIs         = 20;
+    const float                             c_ScalePerBoldi                 = 0.05f;
+    const float                             c_GrowPerBoldi                  = 0.01f;
+    const float                             c_DelayPerBoldi                 = 0.1f;
 
-    static Dictionary<int, Material>        s_Materials             = new Dictionary<int, Material>();
+    static Dictionary<int, Material>        s_Materials                     = new Dictionary<int, Material>();
 
-    int                                     m_Id                    = -1;
-    int                                     m_BoldiCount            = 0;
-    Text                                    m_BoldiCountText        = null;
-    float                                   m_GrowRate              = 1.0f;
-    XKTimer                                 m_GrowTimer             = null;
-    XKTimer                                 m_LaunchTimer           = null;
+    int                                     m_Id                            = -1;
+    int                                     m_BoldiCount                    = 0;
+    Text                                    m_BoldiCountText                = null;
+    float                                   m_GrowRate                      = 1.0f;
+    XKTimer                                 m_GrowTimer                     = null;
+    XKTimer                                 m_LaunchTimer                   = null;
 
-    Dictionary<Home, int>                   m_ToLaunch              = new Dictionary<Home, int>();
+    Dictionary<Home, int>                   m_ToLaunch                      = new Dictionary<Home, int>();
 
     #endregion
 
@@ -38,7 +39,7 @@ public class Home : Piece, IHome
         base.Initialize();
 
         CreateTimers();
-        InitProps();
+        InitProps(false);
     }
 
     /// <summary>
@@ -60,6 +61,15 @@ public class Home : Piece, IHome
     /// <summary>
     /// 
     /// </summary>
+    public void AttributeAI()
+    {
+        // reset default properties as an AI (common for everyone)
+        InitProps(true);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
     /// <param name="boldi"></param>
     public void OnHit(Boldi boldi)
     {
@@ -67,18 +77,22 @@ public class Home : Piece, IHome
         {
             if (m_BoldiCount > 0)
             {
+                // kill defender Boldies
                 SetBoldiCount(m_BoldiCount - 1);
             }
             else
             {
+                // change owner
                 TeamId = boldi.TeamId;
             }
         }
         else
         {
+            // grow current boldi count, it is mine
             SetBoldiCount(m_BoldiCount + 1);
         }
 
+        // recycle the Boldi for further use
         m_Gameboard.Pool.ReturnBoldi(boldi);
     }
 
@@ -116,10 +130,10 @@ public class Home : Piece, IHome
         m_LaunchTimer.StartTimer(c_DelayPerBoldi);
     }
 
-    void InitProps()
+    void InitProps(bool isAI)
     {
         // init BoldiCount
-        SetBoldiCount(Lehmer.Range(0, 50));
+        SetBoldiCount(isAI ? c_StartBoldiCountForAIs : Lehmer.Range(0, 50));
 
         // scale according to start BoldiCount
         SetScale(Vector3.one * (1.0f + m_BoldiCount * c_ScalePerBoldi));

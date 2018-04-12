@@ -221,7 +221,10 @@ public class Gameboard : XKObject, IGameboard
         IGameboard gb = (this);
         IHome[] homes = gb.GetHomes(-1, true);
         if (homes.Length > 0)
+        {
+            ((Home)homes[0]).AttributeAI();
             ((Home)homes[0]).TeamId = res.TeamId;
+        }
 
         return res;
     }
