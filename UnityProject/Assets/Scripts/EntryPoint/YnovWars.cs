@@ -1,4 +1,5 @@
-﻿using XKTools;
+﻿using UnityEngine;
+using XKTools;
 
 /// <summary>
 /// 
@@ -7,7 +8,10 @@ public class YnovWars : XKBehaviour
 {
     #region Members
 
-    Gameboard       m_Gameboard         = null;
+    Gameboard           m_Gameboard         = null;
+
+    [SerializeField]
+    int                 m_Seed              = -1;
 
     #endregion
 
@@ -21,6 +25,7 @@ public class YnovWars : XKBehaviour
     {
         base.Start();
 
+        InitSeed();
         EnableLogs();
         CreateGameboard();
         CreateAI();
@@ -31,9 +36,18 @@ public class YnovWars : XKBehaviour
 
     #region Private Manipulators
 
+    void InitSeed()
+    {
+        // set seed for easy tests
+        if (m_Seed > 0)
+            Lehmer.Seed = m_Seed;
+        XKLog.LogWithContext("Info", "YnovWars.Seed: " + Lehmer.Seed, this);
+    }
+
     void EnableLogs()
     {
         XKLog.EnableLogType("Error", true);
+        XKLog.EnableLogType("Info", true);
     }
 
     void CreateGameboard()
@@ -45,10 +59,14 @@ public class YnovWars : XKBehaviour
     {
         if (m_Gameboard == null)
             return;
-        m_Gameboard.CreateAI<AITester>();
-        m_Gameboard.CreateAI<AITester>();
-        m_Gameboard.CreateAI<AITester>();
-        m_Gameboard.CreateAI<AITester>();
+
+        if (m_Gameboard.Homes.Length >= 4)
+        {
+            m_Gameboard.CreateAI<AITester>();
+            m_Gameboard.CreateAI<AITester>();
+            m_Gameboard.CreateAI<AITester>();
+            m_Gameboard.CreateAI<AITester>();
+        }
     }
 
     #endregion

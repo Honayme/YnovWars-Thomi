@@ -40,9 +40,6 @@ public class Gameboard : XKObject, IGameboard
     {
         base.Initialize();
 
-        // set seed for easy tests
-        Lehmer.Seed = 2;
-
         // create gameboard elements
         FindCamera();
         FindHomeTemplate();
