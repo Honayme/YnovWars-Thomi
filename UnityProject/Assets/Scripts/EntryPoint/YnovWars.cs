@@ -21,13 +21,29 @@ public class YnovWars : XKBehaviour
     {
         base.Start();
 
+        EnableLogs();
+        CreateGameboard();
+    }
+
+    #endregion
+
+
+    #region Private Manipulators
+
+    void EnableLogs()
+    {
+        XKLog.EnableLogType("Error", true);
+    }
+
+    void CreateGameboard()
+    {
         m_Gameboard = ComponentContainer.AddXKComponent<Gameboard>();
     }
 
     #endregion
 
 
-    #region Public Manipulators
+    #region Public Accessors
 
     /// <summary>
     /// 
