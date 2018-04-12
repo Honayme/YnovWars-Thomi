@@ -235,6 +235,9 @@ public class Home : Piece, IHome
             m_ToLaunch.Add((Home)to, boldiCount);
         else
             m_ToLaunch[(Home)to] += boldiCount;
+
+        // notify who wants to listen
+        m_Gameboard.OnBoldiLaunch(this, to);
     }
 
     #endregion

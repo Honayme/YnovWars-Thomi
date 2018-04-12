@@ -35,10 +35,30 @@ public class AITester : AIBase
     {
         base.Update();
 
+        // basic test helper
         if (Input.GetKeyDown(KeyCode.A))
         {
             LaunchRandom();
         }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="from"></param>
+    /// <param name="to"></param>
+    public override void OnBoldiLaunch(IHome from, IHome to)
+    {
+        base.OnBoldiLaunch(from, to);
+
+        // don't care, I'm the one that launched the boldies
+        if (from.TeamId == TeamId)
+            return;
+
+        // don't care, I'm not the target, though it may be a great idea to strike back at the offender
+        if (to.TeamId != TeamId)
+            return;
+        
     }
 
     #endregion
