@@ -25,6 +25,7 @@ public class Gameboard : XKObject, IGameboard
     IHome[]             m_IHomes            = null;
     List<Boldi>         m_Boldies           = new List<Boldi>();
     List<AIBase>        m_AIs               = new List<AIBase>();
+    List<AIBase>        m_AliveAIs          = new List<AIBase>();
 
     Text                m_HomeTemplate      = null;
 
@@ -213,6 +214,7 @@ public class Gameboard : XKObject, IGameboard
         T res = AddXKComponent<T>();
         res.TeamId = m_AIs.Count;
         m_AIs.Add(res);
+        m_AliveAIs.Add(res);
 
         // find a start home!
         IGameboard gb = (this);
@@ -233,8 +235,8 @@ public class Gameboard : XKObject, IGameboard
     /// <param name="to"></param>
     public void OnBoldiLaunch(IHome from, IHome to)
     {
-        for (int i = 0; i < m_AIs.Count; ++i)
-            m_AIs[i].OnBoldiLaunch(from, to);
+        for (int i = 0; i < m_AliveAIs.Count; ++i)
+            m_AliveAIs[i].OnBoldiLaunch(from, to);
     }
 
     #endregion
@@ -309,6 +311,12 @@ public class Gameboard : XKObject, IGameboard
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="teamId"></param>
+    /// <param name="belongToTeam"></param>
+    /// <returns></returns>
     public IHome[] GetHomes(int teamId, bool belongToTeam)
     {
         m_TmpHomes.Clear();
@@ -326,6 +334,23 @@ public class Gameboard : XKObject, IGameboard
             }
         }
         return m_TmpHomes.ToArray();
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="ai"></param>
+    public void OnAIDied(AIBase ai)
+    {
+        m_AliveAIs.Remove(ai);
+        ai.XKActive = false;
+        XKLog.Log("Info", "An AI has died: " + ai.TeamId);
+
+        if (m_AliveAIs.Count == 1)
+        {
+            XKActive = false;
+            XKLog.Log("Info", "The last AI has died, the winner is: " + m_AliveAIs[0].TeamId);
+        }
     }
 
     /// <summary>

@@ -17,6 +17,12 @@ public interface IGameboard
     IHome[] GetHomes(int teamId, bool belongToTeam);
 
     /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="ai"></param>
+    void OnAIDied(AIBase ai);
+
+    /// <summary>
     /// Helps to know the move speed of a boldy (units per seconds)
     /// </summary>
     float BoldiSpeed { get; }
