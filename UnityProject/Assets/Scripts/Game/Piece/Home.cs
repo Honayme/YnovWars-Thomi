@@ -1,4 +1,6 @@
-﻿using XKTools;
+﻿using System.Collections.Generic;
+using UnityEngine;
+using XKTools;
 
 /// <summary>
 /// 
@@ -6,6 +8,8 @@
 public class Home : Piece
 {
     #region Members
+
+    static Dictionary<int, Material>        s_Materials         = new Dictionary<int, Material>();
 
     #endregion
 
@@ -21,9 +25,20 @@ public class Home : Piece
 
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    protected override void OnSetTeamId()
+    {
+        base.OnSetTeamId();
+
+        SetMaterial(s_Materials);
+    }
+
     #endregion
 
 
     #region Private Manipulators
+
     #endregion
 }

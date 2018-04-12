@@ -13,6 +13,9 @@ public class Piece : GameboardComp
     static Dictionary<Type, int>        s_CreatedObjectCounter          = new Dictionary<Type, int>();
 
     Transform                           m_Root                          = null;
+    Renderer                            m_Renderer                      = null;
+
+    int                                 m_TeamId                        = -1;
 
     #endregion
 
@@ -32,8 +35,34 @@ public class Piece : GameboardComp
     #endregion
 
 
+    #region Public Manipulators
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    public Material GetMaterial()
+    {
+        if (m_Renderer != null)
+           return m_Renderer.sharedMaterial;
+        return null;
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="mat"></param>
+    public void ApplyMaterial(Material mat)
+    {
+        if (m_Renderer != null)
+            m_Renderer.sharedMaterial = mat;
+    }
+
+    #endregion
+
+
     #region Protected Manipulators
-    
+
     /// <summary>
     /// 
     /// </summary>
@@ -59,9 +88,44 @@ public class Piece : GameboardComp
     {
         GameObject obj = LoadGameObject();
         if (obj != null)
+        {
             m_Root = obj.transform;
+            m_Renderer = m_Root.GetComponent<Renderer>();
+            m_Renderer.IsValid("Piece.CreateRenderer().Renderer");
+        }
     }
-    
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="materials"></param>
+    protected void SetMaterial(Dictionary<int, Material> materials)
+    {
+        // add material if needed
+        if (!materials.ContainsKey(TeamId))
+        {
+            Material mat = GetMaterial();
+            if (mat != null)
+            {
+                mat = GameObject.Instantiate(mat);
+                mat.color = m_Gameboard.GetColor(TeamId);
+                materials[TeamId] = mat;
+            }
+            else
+                return;
+        }
+
+        ApplyMaterial(materials[TeamId]);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    protected virtual void OnSetTeamId()
+    {
+
+    }
+
     #endregion
 
 
@@ -86,9 +150,34 @@ public class Piece : GameboardComp
     /// <summary>
     /// 
     /// </summary>
+    public int TeamId
+    {
+        get { return m_TeamId; }
+        set
+        {
+            m_TeamId = value;
+            OnSetTeamId();
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
     public Transform Root
     {
         get { return m_Root; }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="b"></param>
+    public void SetActive(bool b)
+    {
+        XKActive = b;
+
+        if (m_Root != null)
+            m_Root.gameObject.SetActive(b);
     }
 
     /// <summary>

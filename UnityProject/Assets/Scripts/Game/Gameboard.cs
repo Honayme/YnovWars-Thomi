@@ -13,6 +13,7 @@ public class Gameboard : XKObject
     const int           c_GridSize          = 5;
     Camera              m_Camera            = null;
 
+    Pool                m_Pool              = null;
 
     Transform           m_Root              = null;
     Transform           m_HomeRoot          = null;
@@ -38,7 +39,19 @@ public class Gameboard : XKObject
         // create gameboard elements
         FindCamera();
         CreateRoots();
+        CreatePool();
         CreateMap();
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public override void Shutdown()
+    {
+        base.Shutdown();
+
+        // nullify pointers
+        m_Pool = null;
     }
 
     #endregion
@@ -64,9 +77,13 @@ public class Gameboard : XKObject
         root.parent = m_Root;
     }
 
+    void CreatePool()
+    {
+        m_Pool = AddXKComponent<Pool>();
+    }
+
     void CreateMap()
     {
-        Debug.Log("CreateMap");
         if (m_Camera.orthographic)
         {
             Vector3 bounds = Vector3.zero;
@@ -139,7 +156,7 @@ public class Gameboard : XKObject
 
         res.SetParent(m_HomeRoot);
         res.SetPosition(position);
-        // attribute team
+        res.TeamId = -1;
 
         return res;
     }
@@ -154,7 +171,6 @@ public class Gameboard : XKObject
         m_Boldies.Add(res);
 
         res.SetParent(m_BoldiRoot);
-        // attribute team
 
         return res;
     }
@@ -170,6 +186,42 @@ public class Gameboard : XKObject
     public Camera Camera
     {
         get { return m_Camera; }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public Pool Pool
+    {
+        get { return m_Pool; }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="teamId"></param>
+    /// <returns></returns>
+    public Color GetColor(int teamId)
+    {
+        switch (teamId)
+        {
+            case 0:
+                return Color.red;
+            case 1:
+                return Color.green;
+            case 2:
+                return Color.blue;
+            case 3:
+                return Color.yellow;
+            case 4:
+                return Color.magenta;
+            case 5:
+                return Color.cyan;
+            case 6:
+                return Color.white;
+        }
+
+        return Color.grey;
     }
 
     #endregion
