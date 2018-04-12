@@ -25,8 +25,8 @@ public class YnovWars : XKBehaviour
     {
         base.Start();
 
-        InitSeed();
         EnableLogs();
+        InitSeed();
         CreateGameboard();
         CreateAI();
     }
