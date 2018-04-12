@@ -1,12 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using XKTools;
 
 /// <summary>
 /// 
 /// </summary>
-public class Gameboard : XKObject
+public class Gameboard : XKObject, IGameboard
 {
     #region Members
 
@@ -20,6 +21,8 @@ public class Gameboard : XKObject
     Transform           m_BoldiRoot         = null;
     List<Home>          m_Homes             = new List<Home>();
     List<Boldi>         m_Boldies           = new List<Boldi>();
+
+    Text                m_HomeTemplate      = null;
 
     #endregion
 
@@ -38,6 +41,7 @@ public class Gameboard : XKObject
 
         // create gameboard elements
         FindCamera();
+        FindHomeTemplate();
         CreateRoots();
         CreatePool();
         CreateMap();
@@ -64,6 +68,17 @@ public class Gameboard : XKObject
         m_Camera = Camera.main;
     }
 
+    void FindHomeTemplate()
+    {
+        GameObject obj = GameObject.Find("HomeTemplate");
+        if (obj.IsValid("Gameboard.HomeTemplate"))
+        {
+            m_HomeTemplate = obj.GetComponent<Text>();
+            if (m_HomeTemplate.IsValid("Gameboard.HomeTemplate.Text"))
+                m_HomeTemplate.text = "";
+        }
+    }
+
     void CreateRoots()
     {
         m_Root = new GameObject("Gameboard").transform;
@@ -87,10 +102,10 @@ public class Gameboard : XKObject
         if (m_Camera.orthographic)
         {
             Vector3 bounds = Vector3.zero;
-            bounds.z = m_Camera.orthographicSize;
-            bounds.x = bounds.z * Screen.width / Screen.height;
+            bounds.y = m_Camera.orthographicSize;
+            bounds.x = bounds.y * Screen.width / Screen.height;
             bounds.x *= 0.85f; // keep 15 % off
-            bounds.z *= 0.8f; // keep 20 % off
+            bounds.y *= 0.8f; // keep 20 % off
 
             CreateHomes(bounds);
         }
@@ -121,7 +136,7 @@ public class Gameboard : XKObject
         int w = idx - h * c_GridSize;
 
         res.x = -bounds.x + w * bounds.x * 2.0f / (c_GridSize - 1);
-        res.z = -bounds.z + h * bounds.z * 2.0f / (c_GridSize - 1);
+        res.y = -bounds.y + h * bounds.y * 2.0f / (c_GridSize - 1);
 
         return res;
     }
@@ -157,6 +172,17 @@ public class Gameboard : XKObject
         res.SetParent(m_HomeRoot);
         res.SetPosition(position);
         res.TeamId = -1;
+        res.Id = m_HomeRoot.childCount - 1;
+
+        if (m_HomeTemplate != null)
+        {
+            GameObject text = Object.Instantiate(m_HomeTemplate.gameObject);
+            text.transform.SetParent(m_HomeTemplate.transform.parent, false);
+            text.transform.position = position.NoZ();
+            text.transform.localPosition = text.transform.localPosition.NoZ();
+            text.name = "Counter_" + res.Id.ToString();
+            res.SetBoldiCountText(text.GetComponent<Text>());
+        }
 
         return res;
     }
@@ -222,6 +248,17 @@ public class Gameboard : XKObject
         }
 
         return Color.grey;
+    }
+
+    #endregion
+
+
+    #region IGameboard Implementation
+
+    void IGameboard.LaunchBoldies(IHome from, IHome to, EAmount amount)
+    {
+        Home fromHome = (Home)from;
+        Home toHome = (Home)to;
     }
 
     #endregion

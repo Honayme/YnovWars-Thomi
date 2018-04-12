@@ -200,5 +200,15 @@ public class Piece : GameboardComp
             m_Root.position = position;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="scale"></param>
+    public void SetScale(Vector3 scale)
+    {
+        if (m_Root != null)
+            m_Root.localScale = scale;
+    }
+
     #endregion
 }

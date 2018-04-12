@@ -5,7 +5,7 @@ using XKTools;
 /// <summary>
 /// 
 /// </summary>
-public class Boldi : Piece
+public class Boldi : Piece, IBoldi
 {
     #region Members
     
