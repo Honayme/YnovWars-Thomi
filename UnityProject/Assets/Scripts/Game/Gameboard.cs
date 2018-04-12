@@ -12,6 +12,7 @@ public class Gameboard : XKObject, IGameboard
     #region Members
 
     const int           c_GridSize          = 5;
+    const float         c_BoldiSpeed        = 10.0f;
     Camera              m_Camera            = null;
 
     Pool                m_Pool              = null;
@@ -290,7 +291,10 @@ public class Gameboard : XKObject, IGameboard
 
     #region IGameboard Implementation
 
-    IHome[] IGameboard.Homes
+    /// <summary>
+    /// 
+    /// </summary>
+    public IHome[] Homes
     {
         get
         {
@@ -305,7 +309,7 @@ public class Gameboard : XKObject, IGameboard
         }
     }
 
-    IHome[] IGameboard.GetHomes(int teamId, bool belongToTeam)
+    public IHome[] GetHomes(int teamId, bool belongToTeam)
     {
         m_TmpHomes.Clear();
         for (int i = 0; i < m_Homes.Count; ++i)
@@ -322,6 +326,14 @@ public class Gameboard : XKObject, IGameboard
             }
         }
         return m_TmpHomes.ToArray();
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public float BoldiSpeed
+    {
+        get { return c_BoldiSpeed; }
     }
 
     #endregion

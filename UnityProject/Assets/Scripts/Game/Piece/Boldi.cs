@@ -9,7 +9,6 @@ public class Boldi : Piece, IBoldi
 {
     #region Members
     
-    const float                             c_Speed             = 10.0f;
     static Dictionary<int, Material>        s_Materials         = new Dictionary<int, Material>();
     
     Home                                    m_Destination       = null;
@@ -87,7 +86,7 @@ public class Boldi : Piece, IBoldi
         }
 
         // keep moving to destination
-        SetPosition(Position + dir.normalized * Time.deltaTime * c_Speed);
+        SetPosition(Position + dir.normalized * Time.deltaTime * m_Gameboard.BoldiSpeed);
     }
 
     #endregion
