@@ -27,5 +27,14 @@ public class AIBase : GameboardCompInterfaced
 
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="home"></param>
+    /// <param name="formerTeamId"></param>
+    public virtual void OnHomeChangedOwner(IHome home, int formerTeamId)
+    {
+    }
+
     #endregion
 }

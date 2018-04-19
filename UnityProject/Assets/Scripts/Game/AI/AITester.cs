@@ -58,7 +58,16 @@ public class AITester : AIBase
         // don't care, I'm not the target, though it may be a great idea to strike back at the offender
         if (to.TeamId != TeamId)
             return;
-        
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="home"></param>
+    /// <param name="formerTeamId"></param>
+    public override void OnHomeChangedOwner(IHome home, int formerTeamId)
+    {
+        base.OnHomeChangedOwner(home, formerTeamId);
     }
 
     #endregion

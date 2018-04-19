@@ -270,6 +270,17 @@ public class Gameboard : XKObject, IGameboard
             m_AliveAIs[i].OnBoldiLaunch(from, to);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="home"></param>
+    /// <param name="formerTeamId"></param>
+    public virtual void OnHomeChangedOwner(IHome home, int formerTeamId)
+    {
+        for (int i = 0; i < m_AliveAIs.Count; ++i)
+            m_AliveAIs[i].OnHomeChangedOwner(home, formerTeamId);
+    }
+
     #endregion
 
 

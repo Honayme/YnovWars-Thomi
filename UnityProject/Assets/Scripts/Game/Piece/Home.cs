@@ -82,8 +82,11 @@ public class Home : Piece, IHome
             }
             else
             {
+                int formerTeamId = TeamId;
+
                 // change owner
                 TeamId = boldi.TeamId;
+                m_Gameboard.OnHomeChangedOwner(this, formerTeamId);
             }
         }
         else
