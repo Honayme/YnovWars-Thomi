@@ -77,16 +77,17 @@ public class Boldi : Piece, IBoldi
     void UpdateMoveTo()
     {
         Vector3 dir = m_Destination.Position - Position;
+        float move = Time.deltaTime * m_Gameboard.BoldiSpeed;
 
         // the boldi has arrived
-        if (dir.sqrMagnitude < 1.0f)
+        if (dir.sqrMagnitude <= move * move)
         {
             m_Destination.OnHit(this);
             return;
         }
 
         // keep moving to destination
-        SetPosition(Position + dir.normalized * Time.deltaTime * m_Gameboard.BoldiSpeed);
+        SetPosition(Position + dir.normalized * move);
     }
 
     #endregion
