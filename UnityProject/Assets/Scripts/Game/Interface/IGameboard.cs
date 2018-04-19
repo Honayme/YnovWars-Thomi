@@ -19,8 +19,8 @@ public interface IGameboard
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="ai"></param>
-    void OnAIDied(AIBase ai);
+    /// <param name="teamId"></param>
+    void OnAIDied(int teamId);
 
     /// <summary>
     /// Helps to know the move speed of a boldy (units per seconds)

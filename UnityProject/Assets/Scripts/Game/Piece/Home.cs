@@ -87,6 +87,14 @@ public class Home : Piece, IHome
                 // change owner
                 TeamId = boldi.TeamId;
                 m_Gameboard.OnHomeChangedOwner(this, formerTeamId);
+
+                // check team death
+                if (formerTeamId != -1)
+                {
+                    IHome[] homes = m_Gameboard.GetHomes(formerTeamId, true);
+                    if (homes == null || homes.Length == 0)
+                        m_Gameboard.OnAIDied(formerTeamId);
+                }
             }
         }
         else

@@ -381,9 +381,10 @@ public class Gameboard : XKObject, IGameboard
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="ai"></param>
-    public void OnAIDied(AIBase ai)
+    /// <param name="teamId"></param>
+    public void OnAIDied(int teamId)
     {
+        AIBase ai = m_AIs[teamId];
         m_AliveAIs.Remove(ai);
         ai.XKActive = false;
         XKLog.Log("Info", "An AI has died: " + ai.TeamId);

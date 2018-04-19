@@ -90,11 +90,6 @@ public class AITester : AIBase
     {
         // find a home which is mine
         IHome[] myHomes = m_Gameboard.GetHomes(TeamId, true);
-        if (myHomes.Length == 0)
-        {
-            m_Gameboard.OnAIDied(this);
-        }
-
         IHome[] theirHomes = m_Gameboard.GetHomes(TeamId, false);
 
         // launch boldies
