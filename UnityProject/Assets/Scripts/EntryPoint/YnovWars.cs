@@ -62,10 +62,10 @@ public class YnovWars : XKBehaviour
 
         if (m_Gameboard.Homes.Length >= 4)
         {
-            m_Gameboard.CreateAI<AITester>();
-            m_Gameboard.CreateAI<AITester>();
-            m_Gameboard.CreateAI<AITester>();
-            m_Gameboard.CreateAI<AITester>();
+            m_Gameboard.CreateAI<YW.NicoJ.AITester>();
+            m_Gameboard.CreateAI<YW.NicoJ.AITester>();
+            m_Gameboard.CreateAI<YW.NicoJ.AITester>();
+            m_Gameboard.CreateAI<YW.NicoJ.AITester>();
         }
     }
 
