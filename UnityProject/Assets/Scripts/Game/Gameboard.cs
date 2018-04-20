@@ -16,6 +16,7 @@ public class Gameboard : XKObject, IGameboard
     /// </summary>
     public const int    c_NeutralTeamId     = -1;
     const int           c_GridSize          = 5;
+    const int           c_MinHomeCount      = c_GridSize * 2;
     const float         c_BoldiSpeed        = 10.0f;
     Camera              m_Camera            = null;
 
@@ -164,7 +165,7 @@ public class Gameboard : XKObject, IGameboard
         rnd.Range = Lehmer.Range;
 
         // create homes
-        int homeCount = Lehmer.Range(3, c_GridSize * c_GridSize);
+        int homeCount = Lehmer.Range(c_MinHomeCount, c_GridSize * c_GridSize);
         for (int i = 0; i < homeCount; ++i)
             CreateHome(GetPosition(rnd.DrawValue(), bounds));
     }
