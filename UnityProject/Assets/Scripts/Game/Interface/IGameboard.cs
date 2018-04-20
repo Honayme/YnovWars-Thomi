@@ -20,8 +20,9 @@ public interface IGameboard
     /// 
     /// </summary>
     /// <param name="teamId"></param>
-    void OnAIDied(int teamId);
-
+    /// <returns></returns>
+    IBoldi[] GetBoldies(int teamId);
+    
     /// <summary>
     /// Helps to know the move speed of a boldy (units per seconds)
     /// </summary>

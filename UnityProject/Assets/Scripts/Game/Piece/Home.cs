@@ -93,7 +93,7 @@ public class Home : Piece, IHome
                 {
                     IHome[] homes = m_Gameboard.GetHomes(formerTeamId, true);
                     if (homes == null || homes.Length == 0)
-                        m_Gameboard.OnAIDied(formerTeamId);
+                        m_Gameboard.OnHomelessTeam(formerTeamId);
                 }
             }
         }

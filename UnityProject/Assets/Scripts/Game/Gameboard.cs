@@ -22,6 +22,8 @@ public class Gameboard : XKObject, IGameboard
     Transform           m_BoldiRoot         = null;
     List<Home>          m_Homes             = new List<Home>();
     List<IHome>         m_TmpHomes          = new List<IHome>();
+    List<int>           m_HomelessTeams     = new List<int>();
+    List<IBoldi>        m_TmpBoldies        = new List<IBoldi>();
     IHome[]             m_IHomes            = null;
     List<Boldi>         m_Boldies           = new List<Boldi>();
     List<AIBase>        m_AIs               = new List<AIBase>();
@@ -61,6 +63,8 @@ public class Gameboard : XKObject, IGameboard
 
         m_GameTime += Time.deltaTime;
         SetGameTimeText();
+
+        DetectDeadAI();
     }
 
     /// <summary>
@@ -174,6 +178,37 @@ public class Gameboard : XKObject, IGameboard
         return res;
     }
     
+    void DetectDeadAI()
+    {
+        IHome[] homes;
+        IBoldi[] boldies;
+
+        int i = 0, teamId;
+        while (i < m_HomelessTeams.Count)
+        {
+            teamId = m_HomelessTeams[i];
+
+            // check if the team has revived thanks to its last active boldies
+            homes = GetHomes(teamId);
+            if (homes.Length > 0)
+            {
+                m_HomelessTeams.RemoveAt(i);
+                continue;
+            }
+
+            // check 
+            boldies = GetBoldies(teamId);
+            if (boldies.Length == 0)
+            {
+                m_HomelessTeams.RemoveAt(i);
+                OnAIDied(teamId);
+                continue;
+            }
+
+            i++;
+        }
+    }
+
     #endregion
 
 
@@ -359,7 +394,7 @@ public class Gameboard : XKObject, IGameboard
     /// <param name="teamId"></param>
     /// <param name="belongToTeam"></param>
     /// <returns></returns>
-    public IHome[] GetHomes(int teamId, bool belongToTeam)
+    public IHome[] GetHomes(int teamId, bool belongToTeam = true)
     {
         m_TmpHomes.Clear();
         for (int i = 0; i < m_Homes.Count; ++i)
@@ -382,7 +417,33 @@ public class Gameboard : XKObject, IGameboard
     /// 
     /// </summary>
     /// <param name="teamId"></param>
-    public void OnAIDied(int teamId)
+    /// <returns></returns>
+    public IBoldi[] GetBoldies(int teamId)
+    {
+        m_TmpBoldies.Clear();
+        for (int i = 0; i < m_Boldies.Count; ++i)
+        {
+            if (m_Boldies[i].XKActive
+             && m_Boldies[i].TeamId == teamId)
+                m_TmpBoldies.Add(m_Boldies[i]);
+        }
+        return m_TmpBoldies.ToArray();
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="teamId"></param>
+    public void OnHomelessTeam(int teamId)
+    {
+        m_HomelessTeams.Add(teamId);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="teamId"></param>
+    void OnAIDied(int teamId)
     {
         AIBase ai = m_AIs[teamId];
         m_AliveAIs.Remove(ai);
