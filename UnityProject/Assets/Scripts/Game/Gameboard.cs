@@ -14,7 +14,7 @@ public class Gameboard : XKObject, IGameboard
     /// <summary>
     /// 
     /// </summary>
-    public const int    c_NeutralTeamId     = 5;
+    public const int    c_NeutralTeamId     = -1;
     const int           c_GridSize          = 5;
     const float         c_BoldiSpeed        = 10.0f;
     Camera              m_Camera            = null;
