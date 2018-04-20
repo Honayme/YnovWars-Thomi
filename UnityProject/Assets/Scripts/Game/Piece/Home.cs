@@ -275,7 +275,7 @@ public class Home : Piece, IHome
         // error control
         if (TeamId != ai.TeamId)
         {
-            XKLog.LogRed("Error", "Home.LaunchBodies() failed - Wrong AI asked a move from unowned Home, are you such a cheater?");
+            XKLog.LogRed("Error", "Home.LaunchBodies() failed - Wrong AI asked a move from unowned Home, are you such a cheater? - " + ai.GetType().ToString());
             return false;
         }
 
