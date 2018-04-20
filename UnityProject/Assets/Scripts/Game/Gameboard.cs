@@ -200,7 +200,7 @@ public class Gameboard : XKObject, IGameboard
                 continue;
             }
 
-            // check 
+            // check remaining boldies, they could still take a new Home
             boldies = GetBoldies(teamId);
             if (boldies.Length == 0)
             {
