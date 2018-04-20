@@ -26,6 +26,9 @@ public class Home : Piece, IHome
 
     Dictionary<Home, int>                   m_ToLaunch                      = new Dictionary<Home, int>();
 
+    int                                     m_LastFrameLaunch               = -1;
+    HashSet<Home>                           m_LaunchedHomes                 = new HashSet<Home>();
+
     #endregion
 
 
@@ -194,6 +197,23 @@ public class Home : Piece, IHome
         }
     }
 
+    bool CanLaunchBoldies(Home to)
+    {
+        // reset launched attempts
+        if (m_LastFrameLaunch != Time.frameCount)
+        {
+            m_LastFrameLaunch = Time.frameCount;
+            m_LaunchedHomes.Clear();
+        }
+
+        // check if we already tried to launch to this home
+        if (m_LaunchedHomes.Contains(to))
+            return false;
+        m_LaunchedHomes.Add(to);
+
+        return true;
+    }
+
     #endregion
 
 
@@ -237,16 +257,20 @@ public class Home : Piece, IHome
         // error control
         if (TeamId < 0)
         {
-            XKLog.Log("Error", "LaunchBodies() failed - home does not belong to any team");
+            XKLog.Log("Error", "Home.LaunchBodies() failed - home does not belong to any team");
             return false;
         }
 
         // error control
         if (TeamId != ai.TeamId)
         {
-            XKLog.Log("Error", "LaunchBodies() failed - Wrong AI asked a move from unowned Home, are you such a cheater?");
+            XKLog.Log("Error", "Home.LaunchBodies() failed - Wrong AI asked a move from unowned Home, are you such a cheater?");
             return false;
         }
+
+        // avoid StackOverFlow exception
+        if (!CanLaunchBoldies((Home)to))
+            return false;
 
         // compute boldiCount to launch
         int boldiCount = m_BoldiCount;
