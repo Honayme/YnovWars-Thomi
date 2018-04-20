@@ -460,12 +460,12 @@ public class Gameboard : XKObject, IGameboard
         AIBase ai = m_AIs[teamId];
         m_AliveAIs.Remove(ai);
         ai.XKActive = false;
-        XKLog.Log("Info", "An AI has died: " + ai.TeamId);
+        XKLog.Log("Info", string.Format("An AI has died: {0} ({1}) ", ai.GetType().ToString(), ai.TeamId));
 
         if (m_AliveAIs.Count == 1)
         {
             XKActive = false;
-            XKLog.Log("Info", "The last AI has died, the winner is: " + m_AliveAIs[0].TeamId);
+            XKLog.Log("Info", string.Format("The last AI has died, the winner is: {0} ({1}) ", m_AliveAIs[0].GetType().ToString(), m_AliveAIs[0].TeamId));
         }
     }
 
