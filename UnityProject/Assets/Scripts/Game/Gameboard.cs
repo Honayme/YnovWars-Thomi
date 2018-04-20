@@ -11,6 +11,10 @@ public class Gameboard : XKObject, IGameboard
 {
     #region Members
 
+    /// <summary>
+    /// 
+    /// </summary>
+    public const int    c_NeutralTeamId     = 5;
     const int           c_GridSize          = 5;
     const float         c_BoldiSpeed        = 10.0f;
     Camera              m_Camera            = null;
@@ -239,7 +243,7 @@ public class Gameboard : XKObject, IGameboard
 
         res.SetParent(m_HomeRoot);
         res.SetPosition(position);
-        res.TeamId = -1;
+        res.TeamId = NeutralTeamId;
         res.Id = m_HomeRoot.childCount - 1;
 
         if (m_HomeTemplate != null)
@@ -369,6 +373,14 @@ public class Gameboard : XKObject, IGameboard
 
 
     #region IGameboard Implementation
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public int NeutralTeamId
+    {
+        get { return c_NeutralTeamId; }
+    }
 
     /// <summary>
     /// 

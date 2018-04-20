@@ -89,7 +89,7 @@ public class Home : Piece, IHome
                 m_Gameboard.OnHomeChangedOwner(this, formerTeamId);
 
                 // check team death
-                if (formerTeamId != -1)
+                if (formerTeamId != Gameboard.c_NeutralTeamId)
                 {
                     IHome[] homes = m_Gameboard.GetHomes(formerTeamId, true);
                     if (homes == null || homes.Length == 0)
@@ -125,7 +125,7 @@ public class Home : Piece, IHome
     void OnEndGrowTimer()
     {
         // update boldi count if it belongs to a player
-        if (TeamId != -1)
+        if (TeamId != Gameboard.c_NeutralTeamId)
             SetBoldiCount(m_BoldiCount + 1);
 
         // restart timer

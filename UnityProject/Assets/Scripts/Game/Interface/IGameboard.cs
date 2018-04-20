@@ -3,6 +3,8 @@
 /// </summary>
 public interface IGameboard
 {
+    int NeutralTeamId { get; }
+
     /// <summary>
     /// Returns all the existing Homes
     /// </summary>
