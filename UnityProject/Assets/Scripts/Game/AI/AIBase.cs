@@ -15,6 +15,22 @@ public class AIBase : GameboardCompInterfaced
     #endregion
 
 
+    #region Protected Manipulators
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="from"></param>
+    /// <param name="to"></param>
+    /// <param name="amount"></param>
+    protected void LaunchBoldies(IHome from, IHome to, EAmount amount)
+    {
+        from.LaunchBoldies(to, amount, this);
+    }
+
+    #endregion
+
+
     #region Callback(s)
 
     /// <summary>

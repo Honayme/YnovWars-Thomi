@@ -232,12 +232,20 @@ public class Home : Piece, IHome
         get { return m_GrowRate; }
     }
 
-    void IHome.LaunchBoldies(IHome to, EAmount amount)
+    bool IHome.LaunchBoldies(IHome to, EAmount amount, AIBase ai)
     {
+        // error control
         if (TeamId < 0)
         {
             XKLog.Log("Error", "LaunchBodies() failed - home does not belong to any team");
-            return;
+            return false;
+        }
+
+        // error control
+        if (TeamId != ai.TeamId)
+        {
+            XKLog.Log("Error", "LaunchBodies() failed - Wrong AI asked a move from unowned Home, are you such a cheater?");
+            return false;
         }
 
         // compute boldiCount to launch
@@ -263,6 +271,8 @@ public class Home : Piece, IHome
 
         // notify who wants to listen
         m_Gameboard.OnBoldiLaunch(this, to);
+
+        return true;
     }
 
     #endregion

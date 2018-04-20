@@ -5,5 +5,5 @@ public interface IHome : IPiece
 {
     int BoldiCount { get; }
     float GrowRate { get; }
-    void LaunchBoldies(IHome destination, EAmount amount);
+    bool LaunchBoldies(IHome destination, EAmount amount, AIBase ai);
 }
