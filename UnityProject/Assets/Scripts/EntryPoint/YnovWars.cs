@@ -31,6 +31,24 @@ public class YnovWars : XKBehaviour
         CreateAI();
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    protected override void Update()
+    {
+        base.Update();
+
+        if (m_Gameboard != null && !m_Gameboard.XKActive)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                DeleteGameboard();
+                CreateGameboard();
+                CreateAI();
+            }
+        }
+    }
+
     #endregion
 
 
@@ -53,6 +71,12 @@ public class YnovWars : XKBehaviour
     void CreateGameboard()
     {
         m_Gameboard = ComponentContainer.AddXKComponent<Gameboard>();
+    }
+
+    void DeleteGameboard()
+    {
+        if (m_Gameboard != null)
+            ComponentContainer.RemoveXKComponent(ref m_Gameboard);
     }
 
     void CreateAI()

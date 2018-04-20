@@ -9,6 +9,20 @@ using XKTools;
 /// </summary>
 public class Gameboard : XKObject, IGameboard
 {
+    #region Delegates
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="leaderboard">Ordered from the winner to the first loser</param>
+    public delegate void OnGameOverDlg(List<AIBase> leaderboard);
+
+    /// <summary></summary>
+    public OnGameOverDlg OnGameOver { get; set; }
+
+    #endregion
+
+
     #region Members
 
     /// <summary>
@@ -33,6 +47,7 @@ public class Gameboard : XKObject, IGameboard
     List<Boldi>         m_Boldies           = new List<Boldi>();
     List<AIBase>        m_AIs               = new List<AIBase>();
     List<AIBase>        m_AliveAIs          = new List<AIBase>();
+    List<AIBase>        m_Leaderboard       = new List<AIBase>();
 
     Text                m_HomeTemplate      = null;
     Text                m_GameTimeText      = null;
@@ -79,6 +94,9 @@ public class Gameboard : XKObject, IGameboard
     {
         base.Shutdown();
 
+        // delete gameobjects
+        Finder.DestroyRoot(ERoot.Gameboard);
+
         // nullify pointers
         m_Pool = null;
     }
@@ -123,7 +141,7 @@ public class Gameboard : XKObject, IGameboard
 
     void CreateRoots()
     {
-        m_Root = new GameObject("Gameboard").transform;
+        m_Root = Finder.CreateRoot(ERoot.Gameboard);
         CreateRoot(ref m_HomeRoot, "Homes"); 
         CreateRoot(ref m_BoldiRoot, "Boldies");
     }
@@ -459,14 +477,27 @@ public class Gameboard : XKObject, IGameboard
     void OnAIDied(int teamId)
     {
         AIBase ai = m_AIs[teamId];
+
+        // move ai from alive buffer to leaderboard
         m_AliveAIs.Remove(ai);
+        m_Leaderboard.Insert(0, ai);
+
+        // deactivate ai
         ai.XKActive = false;
         XKLog.Log("Info", string.Format("An AI has died: {0} ({1}) ", ai.GetType().ToString(), ai.TeamId));
 
         if (m_AliveAIs.Count == 1)
         {
+            // store the winner
+            m_Leaderboard.Insert(0, m_AliveAIs[0]);
+
+            // deactivate gameboard, no need to keep it active
             XKActive = false;
             XKLog.Log("Info", string.Format("The last AI has died, the winner is: {0} ({1}) ", m_AliveAIs[0].GetType().ToString(), m_AliveAIs[0].TeamId));
+
+            // announce the game is over to whom ants to listen
+            if (OnGameOver != null)
+                OnGameOver(m_Leaderboard);
         }
     }
 

@@ -2,6 +2,17 @@
 /// <summary>
 /// 
 /// </summary>
+public enum ERoot
+{
+    /// <summary></summary>
+    Gameboard,
+    /// <summary></summary>
+    Count,
+}
+
+/// <summary>
+/// 
+/// </summary>
 public enum EAmount
 {
     /// <summary></summary>

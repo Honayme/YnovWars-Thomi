@@ -48,6 +48,17 @@ public class Home : Piece, IHome
     /// <summary>
     /// 
     /// </summary>
+    public override void Shutdown()
+    {
+        base.Shutdown();
+
+        if (m_BoldiCountText != null)
+            Object.Destroy(m_BoldiCountText);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
     protected override void OnSetTeamId()
     {
         base.OnSetTeamId();
