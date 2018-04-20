@@ -42,9 +42,27 @@ public class AITester : AIBase
         }
 
         // basic test helper
-        if (Input.GetKeyDown(KeyCode.B) && TeamId == 0)
+        if (Input.GetKeyDown(KeyCode.Q) && TeamId == 0)
         {
-            LaunchBoldies();
+            LaunchBoldies(EAmount.Quarter);
+        }
+
+        // basic test helper
+        if (Input.GetKeyDown(KeyCode.H) && TeamId == 0)
+        {
+            LaunchBoldies(EAmount.Half);
+        }
+
+        // basic test helper
+        if (Input.GetKeyDown(KeyCode.T) && TeamId == 0)
+        {
+            LaunchBoldies(EAmount.ThreeQuarter);
+        }
+
+        // basic test helper
+        if (Input.GetKeyDown(KeyCode.F) && TeamId == 0)
+        {
+            LaunchBoldies(EAmount.Full);
         }
     }
 
@@ -108,19 +126,15 @@ public class AITester : AIBase
         }
     }
 
-    void LaunchBoldies()
+    void LaunchBoldies(EAmount amount)
     {
         // find a home which is mine
         IHome[] myHomes = m_Gameboard.GetHomes(TeamId, true);
         IHome[] theirHomes = m_Gameboard.GetHomes(TeamId, false);
 
         // launch boldies
-        if (myHomes.Length > 0 && theirHomes.Length > 2)
-        {
-            LaunchBoldies(myHomes[0], theirHomes[0], EAmount.Half);
-            LaunchBoldies(myHomes[1], theirHomes[0], EAmount.Half);
-            LaunchBoldies(myHomes[2], theirHomes[0], EAmount.Half);
-        }
+        if (myHomes.Length > 0 && theirHomes.Length > 0)
+            LaunchBoldies(myHomes[0], theirHomes[0], amount);
     }
 
     #endregion
