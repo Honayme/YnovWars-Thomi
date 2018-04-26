@@ -30,7 +30,10 @@ public class Gameboard : XKObject, IGameboard
     /// </summary>
     public const int    c_NeutralTeamId     = -1;
     const int           c_GridSize          = 5;
-    const int           c_MinHomeCount      = c_GridSize * 2;
+    /// <summary>
+    /// 
+    /// </summary>
+    public const int    c_MinHomeCount      = c_GridSize * 2;
     const float         c_BoldiSpeed        = 10.0f;
     Camera              m_Camera            = null;
 
