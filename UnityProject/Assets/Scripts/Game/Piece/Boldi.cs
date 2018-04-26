@@ -106,4 +106,17 @@ public class Boldi : Piece, IBoldi
     }
 
     #endregion
+
+
+    #region IBoldi Implementation
+
+    /// <summary>
+    /// 
+    /// </summary>
+    IHome IBoldi.Destination
+    {
+        get { return m_Destination; }
+    }
+
+    #endregion
 }

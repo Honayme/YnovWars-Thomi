@@ -3,5 +3,6 @@
 /// </summary>
 public interface IBoldi : IPiece
 {
-
+    /// <summary>The destination home</summary>
+    IHome Destination { get; }
 }
