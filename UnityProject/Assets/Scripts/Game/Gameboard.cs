@@ -72,6 +72,9 @@ public class Gameboard : XKObject, IGameboard
         CreateRoots();
         CreatePool();
         CreateMap();
+
+        // deactivate gameboard, will be reactivated from StartGame()
+        XKActive = false;
     }
 
     /// <summary>
@@ -337,6 +340,16 @@ public class Gameboard : XKObject, IGameboard
     {
         for (int i = 0; i < m_AliveAIs.Count; ++i)
             m_AliveAIs[i].OnHomeChangedOwner(home, formerTeamId);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public void StartGame()
+    {
+        XKActive = true;
+        for (int i = 0; i < m_AIs.Count; ++i)
+            m_AIs[i].OnGameStart();
     }
 
     #endregion

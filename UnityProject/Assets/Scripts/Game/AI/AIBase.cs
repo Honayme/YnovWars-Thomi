@@ -33,6 +33,14 @@ public class AIBase : GameboardCompInterfaced
     #region Callback(s)
 
     /// <summary>
+    /// Called when the game starts (this replaces the Initialize())
+    /// </summary>
+    public virtual void OnGameStart()
+    {
+
+    }
+
+    /// <summary>
     /// Called when an ai launches bodies (my self included)
     /// </summary>
     /// <param name="from"></param>

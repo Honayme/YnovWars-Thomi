@@ -98,6 +98,8 @@ public class YnovWars : XKBehaviour
             m_Gameboard.CreateAI<YW.NicoJ.AITester>();
             m_Gameboard.CreateAI<YW.NicoJ.AITester>();
         }
+
+        m_Gameboard.StartGame();
     }
 
     #endregion
