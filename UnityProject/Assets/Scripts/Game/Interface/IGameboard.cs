@@ -37,4 +37,9 @@ public interface IGameboard
     /// </summary>
     /// <remarks>This is a constant value</remarks>
     float BoldiSpeed { get; }
+
+    /// <summary>
+    /// Global game time
+    /// </summary>
+    float GameTime { get; }
 }

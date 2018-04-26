@@ -522,5 +522,13 @@ public class Gameboard : XKObject, IGameboard
         get { return c_BoldiSpeed; }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    public float GameTime
+    {
+        get { return m_GameTime; }
+    }
+
     #endregion
 }
