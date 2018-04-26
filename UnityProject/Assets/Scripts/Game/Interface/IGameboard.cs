@@ -6,6 +6,7 @@ public interface IGameboard
     /// <summary>
     /// The Id of the Neutral Homes (-1)
     /// </summary>
+    /// <remarks>This is a constant value</remarks>
     int NeutralTeamId { get; }
 
     /// <summary>
@@ -24,14 +25,16 @@ public interface IGameboard
     IHome[] GetHomes(int teamId, bool belongToTeam);
 
     /// <summary>
-    /// Those are the Boldies alive and visible on the map (not the ones in IHomes)
+    /// Those are the alive and visible Boldies on the map (not the ones in IHomes)
     /// </summary>
     /// <param name="teamId"></param>
     /// <returns></returns>
+    /// <remarks>You can not trust this buffer over time, IBoldies are recycled and reused with a different TeamId after it hits an IHome</remarks>
     IBoldi[] GetBoldies(int teamId);
     
     /// <summary>
-    /// Helps to know the move speed of a boldy (units per seconds)
+    /// Helps to know the move speed of a IBoldi (units per seconds)
     /// </summary>
+    /// <remarks>This is a constant value</remarks>
     float BoldiSpeed { get; }
 }
