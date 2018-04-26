@@ -25,6 +25,7 @@ public class MatchMaker : XKBehaviour
     int                             m_AIPerMatch        = 3;
     Dictionary<int, int>            m_TeamIdToId        = new Dictionary<int, int>();
     Dictionary<int, int>            m_IdToScore         = new Dictionary<int, int>();
+    Dictionary<int, string>         m_IdToName          = new Dictionary<int, string>();
 
     int                             m_PlayedAIs         = 0;
     float                           m_AskRestart        = -1.0f;
@@ -127,7 +128,7 @@ public class MatchMaker : XKBehaviour
             for (int i = 0; i < m_AIPerMatch; ++i)
             {
                 int aiId = m_AIPicker.DrawValue();
-                m_TeamIdToId.Add(i, aiId);
+                m_TeamIdToId.Add(i, aiId); 
                 CreateAI(aiId);
                 m_PlayedAIs++;
             }
@@ -235,7 +236,8 @@ public class MatchMaker : XKBehaviour
         // nothing to do?
         if (ai != null)
         {
-
+            if (!m_IdToName.ContainsKey(aiId))
+                m_IdToName.Add(aiId, ai.GetType().ToString());
         }
     }
 
@@ -284,7 +286,7 @@ public class MatchMaker : XKBehaviour
     {
         for (int i = 0; i < c_AICount; ++i)
         {
-            XKLog.Log("Info", string.Format("AI_{0:00}: {1}", i, m_IdToScore[i]));
+            XKLog.Log("Info", string.Format("AI_{0:00}: {1:00} - {2}", i, m_IdToScore[i], m_IdToName[i]));
         }
     }
 
