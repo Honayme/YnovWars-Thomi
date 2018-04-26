@@ -1,4 +1,5 @@
 ﻿
+using XKTools;
 /// <summary>
 /// 
 /// </summary>
@@ -24,6 +25,13 @@ public class AIBase : GameboardCompInterfaced
     /// <param name="amount"></param>
     protected void LaunchBoldies(IHome from, IHome to, EAmount amount)
     {
+        // error control
+        if (from == null)
+        {
+            XKLog.LogRed("Error", "AIBase.LaunchBodies() failed - (IHome)from is null");
+            return;
+        }
+
         from.LaunchBoldies(to, amount, this);
     }
 

@@ -279,6 +279,13 @@ public class Home : Piece, IHome
             return false;
         }
 
+        // error control
+        if (to == null)
+        {
+            XKLog.LogRed("Error", "Home.LaunchBodies() failed - (IHome)to is null");
+            return false;
+        }
+
         // avoid StackOverFlow exception
         if (!CanLaunchBoldies((Home)to))
             return false;
