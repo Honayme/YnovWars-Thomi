@@ -13,6 +13,9 @@ public class YnovWars : XKBehaviour
     [SerializeField]
     int                 m_Seed              = -1;
 
+    [SerializeField]
+    float               m_TimeScale         = 1.0f;
+
     #endregion
 
 
@@ -38,6 +41,10 @@ public class YnovWars : XKBehaviour
     {
         base.Update();
 
+        // reset time scale
+        Time.timeScale = m_TimeScale;
+
+        // restart game with space button
         if (m_Gameboard != null && !m_Gameboard.XKActive)
         {
             if (Input.GetKeyDown(KeyCode.Space))
