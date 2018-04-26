@@ -66,6 +66,10 @@ public class YnovWars : XKBehaviour
         // set seed for easy tests
         if (m_Seed > 0)
             Lehmer.Seed = m_Seed;
+    }
+
+    void LogSeed()
+    {
         XKLog.LogWithContext("Info", "YnovWars.Seed: " + Lehmer.Seed, this);
     }
 
@@ -77,6 +81,7 @@ public class YnovWars : XKBehaviour
 
     void CreateGameboard()
     {
+        LogSeed();
         m_Gameboard = ComponentContainer.AddXKComponent<Gameboard>();
     }
 
