@@ -104,7 +104,7 @@ namespace YW.NicoJ
 
         void StartTimer()
         {
-            m_Timer.StartTimer(Random.Range(2.0f, 5.0f));
+            m_Timer.StartTimer(Lehmer.Range(2.0f, 5.0f));
         }
 
         void OnEndTimer()
@@ -122,9 +122,9 @@ namespace YW.NicoJ
             // launch boldies
             if (myHomes.Length > 0 && theirHomes.Length > 0)
             {
-                IHome from = myHomes[Random.Range(0, myHomes.Length)];
-                IHome to = theirHomes[Random.Range(0, theirHomes.Length)];
-                EAmount amount = (EAmount)Random.Range(0, (int)EAmount.Count);
+                IHome from = myHomes[Lehmer.Range(0, myHomes.Length)];
+                IHome to = theirHomes[Lehmer.Range(0, theirHomes.Length)];
+                EAmount amount = (EAmount)Lehmer.Range(0, (int)EAmount.Count);
                 LaunchBoldies(from, to, amount);
             }
         }
