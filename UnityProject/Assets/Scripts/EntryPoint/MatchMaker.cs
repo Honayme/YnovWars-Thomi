@@ -9,9 +9,7 @@ public class MatchMaker : XKBehaviour
 {
     #region Members
 
-    const int                       c_AICount           = 3;//27;
-    const int                       c_GamesPerAI        = 2;//3;
-    const int                       c_MaxAIToCreate     = c_GamesPerAI * c_AICount;
+    const int                       c_AICount           = 5;//27;
 
     Gameboard                       m_Gameboard         = null;
 
@@ -20,6 +18,9 @@ public class MatchMaker : XKBehaviour
 
     [SerializeField]
     float                           m_TimeScale         = 1.0f;
+    
+    [SerializeField]
+    int                             m_GamesPerAI        = 3;
 
     IntBufferedRandom               m_AIPicker          = null;
     int                             m_AIPerMatch        = 3;
@@ -258,7 +259,7 @@ public class MatchMaker : XKBehaviour
         }
 
         // restart a new match
-        if (m_PlayedAIs < c_MaxAIToCreate)
+        if (m_PlayedAIs < m_GamesPerAI * c_AICount)
         {
             m_AskRestart = 2.0f;
         }
