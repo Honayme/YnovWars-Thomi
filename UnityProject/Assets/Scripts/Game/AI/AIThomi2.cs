@@ -122,48 +122,61 @@ namespace YW.Thomi
 
 
         //-----------------SORT ENEMY HOME-----------------//
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="theirHomes"></param>
+        /// <returns></returns>
         List<IHome> SortEnemyHomes(IHome[] theirHomes)
         {
-            List<IHome> enemiesHome = new List<IHome>();
+            List<IHome> enemyHomes = new List<IHome>();
             
-            foreach (var theirHome in theirHomes)
+            foreach (IHome theirHome in theirHomes)
             {
                 if (theirHome.TeamId != -1)
                 {
-                    enemiesHome.Add(theirHome);
+                    enemyHomes.Add(theirHome);
                 }
             }
 
-            return enemiesHome; 
+            return enemyHomes; 
         }
         
         //-----------------SORT NEUTRAL HOME-----------------//
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="theirHomes"></param>
+        /// <returns></returns>
         List<IHome> SortNeutralHomes(IHome[] theirHomes)
         {
-            List<IHome> neutralHome = new List<IHome>();
+            List<IHome> neutralHomes = new List<IHome>();
             
-            foreach (var theirHome in theirHomes)
+            foreach (IHome theirHome in theirHomes)
             {
                 if (theirHome.TeamId == -1)
                 {
-                    neutralHome.Add(theirHome);
+                    neutralHomes.Add(theirHome);
                 }
             }
             
-            return neutralHome; 
+            return neutralHomes; 
         }
         
-
+        //-----------------LAUNCHER-----------------//
+        /// <summary>
+        /// 
+        /// </summary>
         void LaunchForGlory()
         {
             IHome[] myHomes = m_Gameboard.GetHomes(TeamId, true);
             IHome[] theirHomes = m_Gameboard.GetHomes(TeamId, false);
             
-            foreach (var myHome in myHomes)
+            foreach (IHome myHome in myHomes)
             {
                 AttackEnemy(myHome, myHomes, theirHomes);
 
-                if (myHomes.Length > 4 || CheckFreeHomes(theirHomes))
+                if (myHomes.Length >= 4 || CheckFreeHomes(theirHomes))
                 {
                     AttackNeutral(myHome, myHomes, theirHomes);    
                 }
@@ -181,27 +194,52 @@ namespace YW.Thomi
             }
         }
 
+        //-----------------LAUNCHER-----------------//
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="myHomes"></param>
+        /// <param name="theirHomes"></param>
+        /// <returns></returns>
         bool CompareTotalBoldiesBetweenMyHomesAndTheirHomes(IHome[] myHomes, IHome[] theirHomes)
         {
             List<IHome> enemyHomes = SortEnemyHomes(theirHomes);
+            List<int> EnemyTeamIdHome = new List<int>();
             bool biggerThanThem = false;
             int countMine = 0;
-            int countTheir = 0; 
+            int countTheir = 1000; 
 
-            foreach (var myHome in myHomes)
+            foreach (IHome myHome in myHomes)
             {
                 countMine += myHome.BoldiCount; 
             }
 
-            foreach (var enemyHome in enemyHomes)
+            foreach (IHome enemyHome in enemyHomes)
             {
-                countTheir += enemyHome.BoldiCount; 
+                EnemyTeamIdHome.Add(enemyHome.TeamId);
+            }
+            
+            List<int> disinctHome = EnemyTeamIdHome.Distinct().ToList();
+
+            foreach (int home in disinctHome)
+            {
+                foreach (IHome enemyHome in enemyHomes)
+                {
+                    if (enemyHome.TeamId == home)
+                    {
+                        if (enemyHome.BoldiCount < countTheir)
+                        {
+                            countTheir = enemyHome.BoldiCount;
+                        }
+                    }
+                }
             }
 
             if (countMine > countTheir)
             {
                 biggerThanThem = true; 
             }
+            
             return biggerThanThem; 
         }
 
@@ -209,7 +247,7 @@ namespace YW.Thomi
         {
             bool BigHomes = false;
             
-            foreach (var myHome in myHomes)
+            foreach (IHome myHome in myHomes)
             {
                 if (myHome.BoldiCount > 50)
                 {
@@ -225,7 +263,7 @@ namespace YW.Thomi
             bool FreeHomes                 =     false;
             List<IHome> neutralFreeHomes   =     SortNeutralHomes(theirHomes);
 
-            foreach (var nFreeHomes in neutralFreeHomes)
+            foreach (IHome nFreeHomes in neutralFreeHomes)
             {
                 if (nFreeHomes.BoldiCount < 2)
                 {
@@ -244,7 +282,7 @@ namespace YW.Thomi
             List<float>     minusDistEnemies   =     new List<float>();
             IHome           choosenEnemyOne    =     null ;
                 
-            foreach (var enemyHome in enemyHomes)
+            foreach (IHome enemyHome in enemyHomes)
             {
                 if (enemyHome.BoldiCount != 0 
                     && Math.Abs(myHome.BoldiCount) / Math.Abs(enemyHome.BoldiCount) > 2 
@@ -258,7 +296,7 @@ namespace YW.Thomi
             float[] arrayMinusEnemiesDist = minusDistEnemies.ToArray();
             float minusEnemyDist = Mathf.Min(arrayMinusEnemiesDist);
                 
-            foreach (var enemyHome in enemyHomes)
+            foreach (IHome enemyHome in enemyHomes)
             {
                 if (minusEnemyDist == enemyHome.Position.magnitude)
                 {
@@ -278,7 +316,7 @@ namespace YW.Thomi
             List<IHome>     neutralHome          =     SortNeutralHomes(theirHomes);
             IHome           choosenNeutralOne    =     null;
 
-            foreach (var neutral in neutralHome)
+            foreach (IHome neutral in neutralHome)
             {
                 if (neutral.BoldiCount <= 2)
                 {
@@ -293,8 +331,7 @@ namespace YW.Thomi
             float[] arrayMinusNeutralDist = minusDistNeutral.ToArray();
             float minustNeutralDist = Mathf.Min(arrayMinusNeutralDist);
                 
-                
-            foreach (var neutral in neutralHome)
+            foreach (IHome neutral in neutralHome)
             {
                 if (minustNeutralDist == neutral.Position.magnitude)
                 {
@@ -317,11 +354,11 @@ namespace YW.Thomi
 
             List<IHome> enemyHomes =  SortEnemyHomes(theirHomes);
             
-            foreach (var myHome in myHomes)
+            foreach (IHome myHome in myHomes)
             {
                 if (myHome.BoldiCount > 49)
                 {
-                    foreach (var enemyHome in enemyHomes)
+                    foreach (IHome enemyHome in enemyHomes)
                     {
                         if (enemyHome.BoldiCount != 0 && myHome.BoldiCount / enemyHome.BoldiCount >= 2 )
                         {

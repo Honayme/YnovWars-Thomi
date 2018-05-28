@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 using XKTools;
 
 /// <summary>
@@ -106,6 +108,7 @@ public class YnovWars : XKBehaviour
 
         m_Gameboard.StartGame();
     }
+
 
     #endregion
 
