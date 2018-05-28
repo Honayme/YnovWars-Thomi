@@ -224,7 +224,7 @@ namespace YW.Thomi
             IHome[] myHomes = m_Gameboard.GetHomes(TeamId, true);
             IHome[] theirHomes = m_Gameboard.GetHomes(TeamId, false);
             
-                int nbTotalTheirHome = 0;
+                /*int nbTotalTheirHome = 0;
 
                 foreach (var home in theirHomes)
                 {
@@ -238,40 +238,32 @@ namespace YW.Thomi
                 {
                     home.BoldiCount += nbTotalMyHome;
                 }
-            
+            */
    
             // find a home which is mine
 
 
             //SORT
-            List<IHome> neutralHome = SortNeutralHomes(theirHomes);
+            
             List<IHome> enemyHomes = SortEnemyHomes(theirHomes);
             
             
             List<float> minusDistEnemies = new List<float>();
-            List<float> minusDistNeutral = new List<float>();
 
 
-            int TotalEnemy = nbTotalTheirHome;
+           /* int TotalEnemy = nbTotalTheirHome;
             int TotalMyHome = nbTotalTheirHome;
             bool attack = TotalMyHome / TotalEnemy > 2.8;
-            
+           */ 
             
             //On applique le même algo pour chaque Personal Home
             foreach (var myHome in myHomes)
             {
-                IHome choosenNeutralOne = null;
                 IHome choosenEnemyOne = null ;
                 
                 //-----------------ENEMIE HOME-----------------//
                foreach (var enemyHome in enemyHomes)
                 {
-                    enemyHome.BoldiCount 
-                    if (attack)
-                    {
-                        LaunchBoldies(myHome, enemyHome, (EAmount.Half));    
-                    }
-                    
                     //Debug.Log("Nombre des boldies ennemi" + enemyHome.BoldiCount);
                     if (enemyHome.BoldiCount != 0 
                         && Math.Abs(myHome.BoldiCount) / Math.Abs(enemyHome.BoldiCount) > 2 
@@ -282,19 +274,20 @@ namespace YW.Thomi
                     }
                 }
                 
+                
                 float[] arrayMinusEnemiesDist = minusDistEnemies.ToArray();
                 float minusEnemyDist = Mathf.Min(arrayMinusEnemiesDist);
                 
                 Debug.Log("Smaller==="+minusEnemyDist);
 
-                    foreach (var enemyHome in enemyHomes)
+                foreach (var enemyHome in enemyHomes)
+                {
+                    if (minusEnemyDist == enemyHome.Position.magnitude)
                     {
-                        if (minusEnemyDist == enemyHome.Position.magnitude)
-                        {
-                            Debug.Log("Smaller=======" + minusEnemyDist);
-                            choosenEnemyOne = enemyHome;
-                        }
+                        Debug.Log("Smaller=======" + minusEnemyDist);
+                        choosenEnemyOne = enemyHome;
                     }
+                }
 
                 if (myHomes.Length > 0 && theirHomes.Length > 0 && choosenEnemyOne != null)
                 {
@@ -303,39 +296,48 @@ namespace YW.Thomi
                 }
 
                 //-----------------NEUTRAL HOME-----------------//
-               /*foreach (var neutral in neutralHome)
-                {
-                    if (neutral.BoldiCount <= 2)
-                    {
-                        LaunchBoldies(myHome, neutral, (EAmount.Quarter));
-                    }
-                    else if (Math.Abs(myHome.BoldiCount) / Math.Abs(neutral.BoldiCount) > 2 && neutral.BoldiCount < myHome.BoldiCount)
-                    {
-                        Debug.Log(neutral.BoldiCount);
-                        minusDistNeutral.Add(neutral.Position.magnitude);
-                    }
-                }
-
-                float[] arrayMinusNeutralDist = minusDistNeutral.ToArray();
-                float minustNeutralDist = Mathf.Min(arrayMinusNeutralDist);
-                
-                
-                    foreach (var neutral in neutralHome)
-                    {
-                        if (minustNeutralDist == neutral.Position.magnitude)
-                        {
-                            choosenNeutralOne = neutral;
-                            minusDistNeutral.Remove(neutral.Position.magnitude);
-                        }
-                    }
-                
-                if (myHomes.Length > 0 && theirHomes.Length > 0 && choosenNeutralOne != null)
-                {
-                    LaunchBoldies(myHome, choosenNeutralOne, (EAmount.Half));
-                }*/
+             AttackNeutral(myHome, myHomes);  
             }
         }
 
+        void AttackNeutral(IHome myHome, IHome[] myHomes)
+        {
+            List<float>     minusDistNeutral     =     new List<float>();
+            IHome[]         theirHomes           =     m_Gameboard.GetHomes(TeamId, false);
+            List<IHome>     neutralHome          =     SortNeutralHomes(theirHomes);
+            IHome           choosenNeutralOne    =     null;
+
+            foreach (var neutral in neutralHome)
+            {
+                if (neutral.BoldiCount <= 2)
+                {
+                    LaunchBoldies(myHome, neutral, (EAmount.Quarter));
+                }
+                else if (Math.Abs(myHome.BoldiCount) / Math.Abs(neutral.BoldiCount) > 2 && neutral.BoldiCount < myHome.BoldiCount)
+                {
+                    Debug.Log(neutral.BoldiCount);
+                    minusDistNeutral.Add(neutral.Position.magnitude);
+                }
+            }
+
+            float[] arrayMinusNeutralDist = minusDistNeutral.ToArray();
+            float minustNeutralDist = Mathf.Min(arrayMinusNeutralDist);
+                
+                
+            foreach (var neutral in neutralHome)
+            {
+                if (minustNeutralDist == neutral.Position.magnitude)
+                {
+                    choosenNeutralOne = neutral;
+                    minusDistNeutral.Remove(neutral.Position.magnitude);
+                }
+            }
+                
+            if (myHomes.Length > 0 && theirHomes.Length > 0 && choosenNeutralOne != null)
+            {
+                LaunchBoldies(myHome, choosenNeutralOne, (EAmount.Half));
+            }
+        }
 
         void LaunchBoldies(EAmount amount)
         {
