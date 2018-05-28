@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using XKTools;
 
 
@@ -119,13 +120,55 @@ namespace YW.NicoJ
             IHome[] myHomes = m_Gameboard.GetHomes(TeamId, true);
             IHome[] theirHomes = m_Gameboard.GetHomes(TeamId, false);
 
-            // launch boldies
-            if (myHomes.Length > 0 && theirHomes.Length > 0)
+
+            List<IHome> neutralBoldiesPerHome = new List<IHome>();
+            List<IHome> enemiesBoldiesPerHome = new List<IHome>();
+
+            foreach (var myHome in myHomes)
             {
-                IHome from = myHomes[Lehmer.Range(0, myHomes.Length)];
-                IHome to = theirHomes[Lehmer.Range(0, theirHomes.Length)];
-                EAmount amount = (EAmount)Lehmer.Range(0, (int)EAmount.Count);
-                LaunchBoldies(from, to, amount);
+                foreach (var theirHome in theirHomes)
+                {
+                    if (theirHome.TeamId == -1)
+                    {
+                        neutralBoldiesPerHome.Add(theirHome);
+                    }
+
+                    enemiesBoldiesPerHome.Add(theirHome);
+                }
+
+                foreach (var neutralBoldiesPerHom in neutralBoldiesPerHome)
+                {
+                    if (neutralBoldiesPerHom.BoldiCount != 0
+                        && myHome.BoldiCount / neutralBoldiesPerHom.BoldiCount >= 2
+                        && myHome.BoldiCount > neutralBoldiesPerHom.BoldiCount
+                        || neutralBoldiesPerHom.BoldiCount == 0)
+                    {
+                        if (myHomes.Length > 0 && theirHomes.Length > 0)
+                        {
+                            IHome from = myHome;
+                            IHome to = neutralBoldiesPerHom;
+                            EAmount amount = (EAmount.ThreeQuarter);
+                            LaunchBoldies(from, to, amount);
+                        }
+                    }
+                }
+
+                foreach (var enemiesBoldiesPerHom in enemiesBoldiesPerHome)
+                {
+                    if (enemiesBoldiesPerHom.BoldiCount != 0
+                        && myHome.BoldiCount / enemiesBoldiesPerHom.BoldiCount >= 2
+                        && myHome.BoldiCount > enemiesBoldiesPerHom.BoldiCount
+                        || enemiesBoldiesPerHom.BoldiCount == 0)
+                    {
+                        if (myHomes.Length > 0 && theirHomes.Length > 0)
+                        {
+                            IHome from = myHome;
+                            IHome to = enemiesBoldiesPerHom;
+                            EAmount amount = (EAmount.ThreeQuarter);
+                            LaunchBoldies(from, to, amount);
+                        }
+                    }
+                }
             }
         }
 

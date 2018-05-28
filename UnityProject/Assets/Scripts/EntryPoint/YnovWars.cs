@@ -100,7 +100,7 @@ public class YnovWars : XKBehaviour
         {
             m_Gameboard.CreateAI<YW.Thomi.AIThomi>();
             m_Gameboard.CreateAI<YW.NicoJ.AITester>();
-            m_Gameboard.CreateAI<YW.Thomi.AIThomiQuiFaitDeLaMerde>(); //Mettre son IA Pour la jouer 
+            m_Gameboard.CreateAI<YW.Thomi.AIThomiQuiFaitDeLaMerde>();  
             m_Gameboard.CreateAI<YW.NicoJ.AITester>();
         }
 
