@@ -315,26 +315,21 @@ namespace YW.Thomi
             // find a home which is mine
             IHome[] myHomes = m_Gameboard.GetHomes(TeamId, true);
             IHome[] theirHomes = m_Gameboard.GetHomes(TeamId, false);
-            
-            List<int> enemiesBoldiesPerHome = new List<int>();
+
+            List<IHome> enemyHomes =  SortEnemyHomes(theirHomes);
             
             foreach (var myHome in myHomes)
             {
                 if (myHome.BoldiCount > 49)
                 {
-                    foreach (var theirHome in theirHomes)
+                    foreach (var enemyHome in enemyHomes)
                     {
-                        if (theirHome.TeamId != -1)
-                        {
-                            enemiesBoldiesPerHome.Add(theirHome.BoldiCount);
-                        }
-                
-                        if (enemiesBoldiesPerHome[enemiesBoldiesPerHome.Count -1] != 0 && myHome.BoldiCount / enemiesBoldiesPerHome[enemiesBoldiesPerHome.Count -1] >= 2 )
+                        if (enemyHome.BoldiCount != 0 && myHome.BoldiCount / enemyHome.BoldiCount >= 2 )
                         {
                             if (myHomes.Length > 0 && theirHomes.Length > 0)
                             {
                                 IHome from = myHome;
-                                IHome to = theirHome;    
+                                IHome to = enemyHome;    
                                 EAmount amount = (EAmount.Half);
                                 LaunchBoldies(from, to, amount); 
                             }
