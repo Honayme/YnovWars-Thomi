@@ -98,9 +98,9 @@ public class YnovWars : XKBehaviour
 
         if (m_Gameboard.Homes.Length >= 4)
         {
+            m_Gameboard.CreateAI<YW.Thomi.AIThomi>();
             m_Gameboard.CreateAI<YW.NicoJ.AITester>();
-            m_Gameboard.CreateAI<YW.NicoJ.AITester>();
-            m_Gameboard.CreateAI<YW.NicoJ.AITester>();
+            m_Gameboard.CreateAI<YW.Thomi.AIThomiQuiFaitDeLaMerde>(); //Mettre son IA Pour la jouer 
             m_Gameboard.CreateAI<YW.NicoJ.AITester>();
         }
 

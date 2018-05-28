@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\Honayme\.Rider2018.1\system\resharper-host\local\Transient\ReSharperHost\v12\SolutionCaches\_UnityProject.748491094.00" t="ExcludeRecursive" />
+    <e p="C:\Users\Honayme\Documents\Cours\Unity\YnovWars\UnityProject" t="IncludeRecursive">
+      <e p="Assembly-CSharp-Editor.csproj" t="IncludeRecursive" />
+      <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
+      <e p="Assets\Editor" t="Include">
+        <e p="PlayerStopper.cs" t="Include" />
+      </e>
+      <e p="Assets\Scripts" t="Include">
+        <e p="EntryPoint" t="Include">
+          <e p="MatchMaker.cs" t="Include" />
+          <e p="YnovWars.cs" t="Include" />
+        </e>
+        <e p="Game" t="Include">
+          <e p="AI" t="Include">
+            <e p="AIBase.cs" t="Include" />
+            <e p="AITester.cs" t="Include" />
+            <e p="AIThomi.cs" t="Include" />
+            <e p="AIThomi2.cs" t="Include" />
+          </e>
+          <e p="Enum" t="Include">
+            <e p="Enums.cs" t="Include" />
+          </e>
+          <e p="Gameboard.cs" t="Include" />
+          <e p="GameboardComp.cs" t="Include" />
+          <e p="GameboardCompInterfaced.cs" t="Include" />
+          <e p="Interface" t="Include">
+            <e p="IBoldi.cs" t="Include" />
+            <e p="IGameboard.cs" t="Include" />
+            <e p="IHome.cs" t="Include" />
+            <e p="IPiece.cs" t="Include" />
+          </e>
+          <e p="Piece" t="Include">
+            <e p="Boldi.cs" t="Include" />
+            <e p="Home.cs" t="Include" />
+            <e p="Piece.cs" t="Include" />
+          </e>
+          <e p="Pool.cs" t="Include" />
+        </e>
+      </e>
+      <e p="Library" t="ExcludeRecursive" />
+      <e p="obj" t="ExcludeRecursive" />
+      <e p="packages" t="ExcludeRecursive" />
+      <e p="Temp" t="ExcludeRecursive">
+        <e p="bin" t="ExcludeRecursive" />
+      </e>
+      <e p="UnityProject.sln" t="IncludeFlat" />
+    </e>
+  </component>
+</project>
