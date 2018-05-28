@@ -178,6 +178,29 @@ namespace YW.Thomi
             }
         }
 
+        bool CompareTotalBoldiesBetweenMyHomesAndTheirHomes(IHome[] myHomes, IHome[] theirHomes)
+        {
+            bool BiggerThanThem = false;
+            int CountMine = 0;
+            int CountTheir = 0; 
+
+            foreach (var myHome in myHomes)
+            {
+                CountMine += myHome.BoldiCount; 
+            }
+
+            foreach (var theirHome in theirHomes)
+            {
+                CountTheir += theirHome.BoldiCount; 
+            }
+
+            if (CountMine > CountTheir)
+            {
+                BiggerThanThem = true; 
+            }
+            return BiggerThanThem; 
+        }
+
         bool CheckForBigHome(IHome[] myHomes)
         {
             bool BigHomes = false;
