@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
@@ -12,7 +13,7 @@ namespace YW.Thomi
     /// <summary>
     /// 
     /// </summary>
-    public class AIThomiQuiFaitDeLaMerde : AIBase
+    public class Thominator : AIBase
     {
         #region Members
 
@@ -120,10 +121,7 @@ namespace YW.Thomi
         }
 
 
-
-        //use the begining spread in the fisrt IA to be a fuckin conquerant
-        //Take in case the total number of boldies to attack 
-        //-----------------SORT ENEMIE HOME-----------------//
+        //-----------------SORT ENEMY HOME-----------------//
         List<IHome> SortEnemyHomes(IHome[] theirHomes)
         {
             List<IHome> enemiesHome = new List<IHome>();
@@ -174,31 +172,37 @@ namespace YW.Thomi
                 {
                     SpreadCuzItsFun();
                 }
+
+                if (CompareTotalBoldiesBetweenMyHomesAndTheirHomes(myHomes, theirHomes))
+                {
+                    AttackTheLessPowerful(theirHomes, myHome);
+                }
                   
             }
         }
 
         bool CompareTotalBoldiesBetweenMyHomesAndTheirHomes(IHome[] myHomes, IHome[] theirHomes)
         {
-            bool BiggerThanThem = false;
-            int CountMine = 0;
-            int CountTheir = 0; 
+            List<IHome> enemyHomes = SortEnemyHomes(theirHomes);
+            bool biggerThanThem = false;
+            int countMine = 0;
+            int countTheir = 0; 
 
             foreach (var myHome in myHomes)
             {
-                CountMine += myHome.BoldiCount; 
+                countMine += myHome.BoldiCount; 
             }
 
-            foreach (var theirHome in theirHomes)
+            foreach (var enemyHome in enemyHomes)
             {
-                CountTheir += theirHome.BoldiCount; 
+                countTheir += enemyHome.BoldiCount; 
             }
 
-            if (CountMine > CountTheir)
+            if (countMine > countTheir)
             {
-                BiggerThanThem = true; 
+                biggerThanThem = true; 
             }
-            return BiggerThanThem; 
+            return biggerThanThem; 
         }
 
         bool CheckForBigHome(IHome[] myHomes)
@@ -254,20 +258,16 @@ namespace YW.Thomi
             float[] arrayMinusEnemiesDist = minusDistEnemies.ToArray();
             float minusEnemyDist = Mathf.Min(arrayMinusEnemiesDist);
                 
-            Debug.Log("Smaller==="+minusEnemyDist);
-
             foreach (var enemyHome in enemyHomes)
             {
                 if (minusEnemyDist == enemyHome.Position.magnitude)
                 {
-                    Debug.Log("Smaller=======" + minusEnemyDist);
                     choosenEnemyOne = enemyHome;
                 }
             }
 
             if (myHomes.Length > 0 && theirHomes.Length > 0 && choosenEnemyOne != null)
             {
-                Debug.Log("@@@@ENEMY@@@@      " + choosenEnemyOne.BoldiCount);
                 LaunchBoldies(myHome, choosenEnemyOne, (EAmount.Half));
             }
         }
@@ -286,7 +286,6 @@ namespace YW.Thomi
                 }
                 else if (Math.Abs(myHome.BoldiCount) / Math.Abs(neutral.BoldiCount) > 2 && neutral.BoldiCount < myHome.BoldiCount)
                 {
-                    Debug.Log(neutral.BoldiCount);
                     minusDistNeutral.Add(neutral.Position.magnitude);
                 }
             }
@@ -338,6 +337,46 @@ namespace YW.Thomi
                 }
                 
             }
+        }
+
+        void AttackTheLessPowerful(IHome[] theirHomes, IHome myHome)
+        {
+            int temp = 10000;
+            int lessPowerful = 0;
+            List<IHome> enemyHomes = SortEnemyHomes(theirHomes);
+            List<int> EnemyTeamIdHome= new List<int>();
+            
+            foreach (IHome enemyHome in enemyHomes)
+            {
+                EnemyTeamIdHome.Add(enemyHome.TeamId);
+            }
+
+            List<int> disinctHome = EnemyTeamIdHome.Distinct().ToList();
+
+            foreach (int home in disinctHome)
+            {
+                foreach (IHome enemyHome in enemyHomes)
+                {
+                    if (enemyHome.TeamId == home)
+                    {
+                        if (enemyHome.BoldiCount < temp)
+                        {
+                            temp = enemyHome.BoldiCount;
+                            lessPowerful = enemyHome.TeamId;
+                        }
+                    }
+                }
+            }
+            
+            foreach (IHome enemyHome in enemyHomes)
+            {
+                if (enemyHome.TeamId == lessPowerful)
+                {
+                    LaunchBoldies(myHome, enemyHome, (EAmount.Quarter)); 
+                }
+            }
+            Debug.Log(temp);
+            Debug.Log(lessPowerful);
         }
 
         void LaunchBoldies(EAmount amount)
