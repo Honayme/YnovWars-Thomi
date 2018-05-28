@@ -169,10 +169,30 @@ namespace YW.Thomi
                 {
                     AttackNeutral(myHome, myHomes, theirHomes);    
                 }
+
+                if (CheckForBigHome(myHomes))
+                {
+                    SpreadCuzItsFun();
+                }
                   
             }
         }
 
+        bool CheckForBigHome(IHome[] myHomes)
+        {
+            bool BigHomes = false;
+            
+            foreach (var myHome in myHomes)
+            {
+                if (myHome.BoldiCount > 50)
+                {
+                    BigHomes = true;
+                }
+            }
+
+            return BigHomes; 
+        }
+        
         bool CheckFreeHomes(IHome[] theirHomes)
         {
             bool FreeHomes                 =     false;
@@ -264,6 +284,41 @@ namespace YW.Thomi
             if (myHomes.Length > 0 && theirHomes.Length > 0 && choosenNeutralOne != null)
             {
                 LaunchBoldies(myHome, choosenNeutralOne, (EAmount.Half));
+            }
+        }
+        
+        void SpreadCuzItsFun()
+        {
+            // find a home which is mine
+            IHome[] myHomes = m_Gameboard.GetHomes(TeamId, true);
+            IHome[] theirHomes = m_Gameboard.GetHomes(TeamId, false);
+            
+            List<int> enemiesBoldiesPerHome = new List<int>();
+            
+            foreach (var myHome in myHomes)
+            {
+                if (myHome.BoldiCount > 49)
+                {
+                    foreach (var theirHome in theirHomes)
+                    {
+                        if (theirHome.TeamId != -1)
+                        {
+                            enemiesBoldiesPerHome.Add(theirHome.BoldiCount);
+                        }
+                
+                        if (enemiesBoldiesPerHome[enemiesBoldiesPerHome.Count -1] != 0 && myHome.BoldiCount / enemiesBoldiesPerHome[enemiesBoldiesPerHome.Count -1] >= 2 )
+                        {
+                            if (myHomes.Length > 0 && theirHomes.Length > 0)
+                            {
+                                IHome from = myHome;
+                                IHome to = theirHome;    
+                                EAmount amount = (EAmount.Half);
+                                LaunchBoldies(from, to, amount); 
+                            }
+                        }
+                    }    
+                }
+                
             }
         }
 
